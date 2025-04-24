@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=width=device-width, initial-scale=1.0">
+        <title>{{titulo}}</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+        <link rel ="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    </head>
+    <body>
+        <div class='container'>
+            <!-- Título -->
+            <div class='container py-3'>
+                <h1 class="text-center display-5 text-warning">
+                    {{titulo}} <i class="bi bi-box"></i>
+                </h1>
+            </div>
+        </div>
+        <!-- Grid principal -->
+        <div class='container-fluid pb-3'>
+            <div class='d-grid gap-3' style="grid-template-columns: 1fr 2fr;">
+                <!-- Contenedor del formulario -->
+                <div class='border rounded-3 p-2'>
+                    <!-- Formulario -->
+                    <form action='/guardar' method="post" autocomplete="off">
+                        {{forma.csrf_token}}
+                        <!-- Valor de Id -->
+                        {{forma.id}}
+                        <!-- Nombre -->
+                        <div class='form-floating py-2'>
+                            {{ forma.nombre(class_="form-control", id="nombre", placeholder="Nombre") }}
+                            {{ forma.nombre.label(class_="form-label") }}
+                            {% for error in forma.nombre.errors %}
+                                <span class="text-danger small">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        <!-- Cantidad -->
+                        <div class='form-floating py-2'>
+                            {{ forma.cantidad(class_="form-control", id="cantidad", placeholder="Cantidad") }}
+                            {{ forma.cantidad.label(class_="form-label") }}
+                            {% for error in forma.cantidad.errors %}
+                                <span class="text-danger small">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        <!-- Precio -->
+                        <div class='form-floating py-2'>
+                            {{ forma.precio(class_="form-control", id="precio", placeholder="Precio") }}
+                            {{ forma.precio.label(class_="form-label") }}
+                            {% for error in forma.precio.errors %}
+                                <span class="text-danger small">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        <!-- Categoría -->
+                        <div class='form-floating py-2'>
+                            <select class="form-select" id="categoria" name="categoria">
+                                <option value="" disabled selected>Seleccione una categoría</option>
+                                {% for valor, etiqueta in forma.categoria.choices %}
+                                    <option value="{{ valor }}" {% if forma.categoria.data == valor %}selected{% endif %}>
+                                        {{ etiqueta }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <label for="categoria" class="form-label">Categoría</label>
+                            {% for error in forma.categoria.errors %}
+                                <span class="text-danger small">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        <!-- Botones -->
+                        <div class='text-center py-2'>
+                            {{ forma.guardar(class_="btn btn-warning btn-sm me-3") }}
+                            <a href='/limpiar' class='btn btn-danger btn-sm'>Limpiar</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- Contenedor de la tabla de productos -->
+                <div class='border rounded-3 p-2'>
+                    <table class='table table-striped table-hover'>
+                        <thead class='table-warning'>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Categoría</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for producto in productos %}
+                            <tr>
+                                <td>{{producto.id}}</td>
+                                <td>{{producto.nombre}}</td>
+                                <td>{{producto.cantidad}}</td>
+                                <td>{{producto.precio}}</td>
+                                <td>{{producto.categoria}}</td>
+                                <td class='text-center'>
+                                    <div>
+                                        <a href='/editar/{{producto.id}}' class='btn btn-warning btn-sm me-3'>
+                                            <i class='bi bi-pencil'></i>
+                                        </a>
+                                        <a href='/eliminar/{{producto.id}}' class='btn btn-danger btn-sm'>
+                                            <i class='bi bi-trash3'></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-7+Q1j6v2m4g8e0b9c3"></script>
+    </body>
+</html>
