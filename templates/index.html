@@ -21,7 +21,16 @@
             <div class='d-grid gap-3' style="grid-template-columns: 1fr 2fr;">
                 <!-- Contenedor del formulario -->
                 <div class='border rounded-3 p-2'>
-                    <!-- Formulario -->
+                    <!-- Formulario de búsqueda -->
+                    <form action='/buscar' method="post" class="mb-3">
+                        <div class="input-group">
+                            <input type="text" name="nombre_buscar" class="form-control" placeholder="Buscar producto por nombre">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-search"></i> Buscar
+                            </button>
+                        </div>
+                    </form>
+                    <!-- Formulario principal -->
                     <form action='/guardar' method="post" autocomplete="off">
                         {{forma.csrf_token}}
                         <!-- Valor de Id -->

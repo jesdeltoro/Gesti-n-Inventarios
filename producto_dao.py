@@ -122,29 +122,23 @@ class ProductoDAO:
         try:
             conexion = Conexion.obtener_conexion()
             cursor = conexion.cursor()
-            valores = (nombre,)
-            cursor.execute(cls.SELECCIONAR_POR_NOMBRE, valores)
+            cursor.execute(cls.SELECCIONAR_POR_NOMBRE, (nombre,))
             registro = cursor.fetchone()
-            producto = Producto(
-                    registro[0],
-                    registro[1],
-                    registro[2],
-                    registro[3],
-                    registro[4]
+            if registro:
+                return Producto(
+                    id=registro[0],
+                    nombre=registro[1],
+                    cantidad=registro[2],
+                    precio=registro[3],
+                    categoria=registro[4]
                 )
-            return producto
         except Exception as e:
             print(f'Ocurrió un error al seleccionar un producto por nombre: {e}')
         finally:
             if conexion is not None:
                 cursor.close()
                 Conexion.liberar_conexion(conexion)
-                print("Conexión liberada después de la selección.")
-                
-    @classmethod
-    def seleccionar_categorias(cls):
-        # Este método ya no es necesario si las categorías son estáticas.
-        return []
+        return None
         
                 
                 

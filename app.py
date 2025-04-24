@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, url_for
+from flask import Flask, redirect, render_template, url_for, request
 from producto import Producto
 from producto_forma import ProductoForma
 from producto_dao import ProductoDAO  # Replace 'your_module' with the actual module name where ProductoDAO is defined
@@ -101,6 +101,27 @@ def producto():
         # Procesar el formulario
         pass
     return render_template('producto.html', form=form)
+
+@app.route('/buscar', methods=['POST'])
+def buscar():
+    nombre_producto = request.form.get('nombre_buscar', '').strip()
+    app.logger.debug(f'Buscando producto con nombre: {nombre_producto}')
+    producto = ProductoDAO.seleccionar_por_nombre(f"%{nombre_producto}%")
+    categorias = [
+        ('alimentación', 'Alimentación'),
+        ('droguería', 'Droguería'),
+        ('menaje de cocina', 'Menaje de Cocina'),
+        ('jardinería', 'Jardinería')
+    ]
+    forma = ProductoForma(obj=producto)
+    forma.cargar_categorias(categorias)
+    if producto:
+        forma.categoria.data = producto.categoria
+        app.logger.debug(f'Producto encontrado: {producto}')
+    else:
+        app.logger.warning(f'No se encontró producto con nombre: {nombre_producto}')
+    productos = ProductoDAO.seleccionar()
+    return render_template('index.html', titulo=titulo_app, productos=productos, forma=forma)
 
 if __name__ == '__main__':
     app.run(debug=True)
