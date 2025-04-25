@@ -175,7 +175,7 @@ Tabla `productos`:
 
 - Detectado error 404 porque no existe un `favicon.ico` en la aplicación.
 - Pendiente de agregar un favicon personalizado o ignorar el aviso si no es prioritario.
-```
+
 
 
 
