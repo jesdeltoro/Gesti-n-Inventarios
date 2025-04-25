@@ -11,8 +11,29 @@ class ProductoDAO:
     SELECCIONAR_POR_ID = "SELECT * FROM productos WHERE id=%s"
     SELECCIONAR_POR_NOMBRE = "SELECT * FROM productos WHERE nombre like %s"
     SELECCIONAR_CATEGORIAS = "SELECT DISTINCT categoria FROM productos"
-    
-    
+    EXISTE_NOMBRE = "SELECT id FROM productos WHERE nombre = %s"
+
+    @classmethod
+    def existe_nombre(cls, nombre, id_actual=None):
+        """Devuelve True si existe otro producto con el mismo nombre y distinto id."""
+        conexion = None
+        try:
+            conexion = Conexion.obtener_conexion()
+            cursor = conexion.cursor()
+            cursor.execute(cls.EXISTE_NOMBRE, (nombre,))
+            registros = cursor.fetchall()
+            # Si hay algún registro y su id es distinto al actual, hay conflicto
+            for registro in registros:
+                if id_actual is None or str(registro[0]) != str(id_actual):
+                    return True
+            return False
+        except Exception as e:
+            print(f'Ocurrió un error al verificar el nombre del producto: {e}')
+        finally:
+            if conexion is not None:
+                cursor.close()
+                Conexion.liberar_conexion(conexion)
+
     @classmethod
     def seleccionar(cls):
         conexion = None
@@ -124,6 +145,9 @@ class ProductoDAO:
             cursor = conexion.cursor()
             cursor.execute(cls.SELECCIONAR_POR_NOMBRE, (nombre,))
             registro = cursor.fetchone()
+            # Consumir todos los resultados restantes para evitar "Unread result found"
+            while cursor.fetchone() is not None:
+                pass
             if registro:
                 return Producto(
                     id=registro[0],
