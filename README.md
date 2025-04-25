@@ -56,6 +56,7 @@ Contiene las configuraciones de conexión a la base de datos, como el nombre de 
 Archivo HTML que define la interfaz de usuario. Incluye:
 - Un formulario para agregar o editar productos.
 - Una tabla para listar los productos existentes.
+- Un formulario para buscar por nombre. 
 - Botones para editar o eliminar productos.
 
 #### 8. `backup_almacen.sql`
