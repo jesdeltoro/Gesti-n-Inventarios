@@ -108,7 +108,7 @@ Tabla `productos`:
 - `precio`: Precio del producto (FLOAT).
 - `categoria`: Categoría del producto (VARCHAR).
 
-# Cambios finales 25/04/2025 Sugeridos por Francisco Matías antes de producción. 
+# Cambios finales 25/04/2025 Sugeridos por Francisco Matías (franciscofm34@gmail.com) antes de producción. 
 
 
 
