@@ -108,4 +108,75 @@ Tabla `productos`:
 - `precio`: Precio del producto (FLOAT).
 - `categoria`: Categoría del producto (VARCHAR).
 
+# Cambios finales 25/04/2025 Sugeridos por Francisco Matías antes de producción. 
+
+
+
+## Cambios realizados para preparar la aplicación Flask para producción
+
+## 1. Sustituir el servidor de desarrollo de Flask por Waitress
+
+- Instalado Waitress:
+
+  ```bash
+  pip install waitress
+  ```
+- Modificado `app.py`:
+  - Importar `serve` de `waitress`:
+    ```python
+    from waitress import serve
+    ```
+  - Reemplazar la ejecución:
+    ```python
+    if __name__ == '__main__':
+        serve(app, host='0.0.0.0', port=5000, threads=4)
+    ```
+
+## 2. Añadir soporte para CORS
+
+- Instalado Flask-CORS:
+  ```bash
+  pip install flask-cors
+  ```
+- Modificado `app.py`:
+  - Importar `CORS`:
+    ```python
+    from flask_cors import CORS
+    ```
+  - Inicializar CORS después de crear la app:
+    ```python
+    app = Flask(__name__)
+    CORS(app)
+    ```
+
+## 3. Corregir la etiqueta meta `viewport` en las plantillas HTML
+
+- Antes (incorrecto):
+  ```html
+  <meta name="viewport" content="width=width=device-width, initial-scale=1.0">
+  ```
+- Después (correcto):
+  ```html
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  ```
+
+## 4. Solucionar el error de Subresource Integrity con Bootstrap
+
+- Antes (problemático):
+  ```html
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="..." crossorigin="anonymous"></script>
+  ```
+- Después (corregido):
+  ```html
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+  ```
+
+## 5. Aviso sobre favicon
+
+- Detectado error 404 porque no existe un `favicon.ico` en la aplicación.
+- Pendiente de agregar un favicon personalizado o ignorar el aviso si no es prioritario.
+```
+
+
+
 

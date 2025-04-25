@@ -2,8 +2,13 @@ from flask import Flask, redirect, render_template, url_for, request, jsonify
 from producto import Producto
 from producto_forma import ProductoForma
 from producto_dao import ProductoDAO  # Replace 'your_module' with the actual module name where ProductoDAO is defined
+from waitress import serve # Importar waitress para servir la aplicación
+from flask_cors import CORS # Importar CORS para habilitar CORS
+
+
 
 app = Flask(__name__)
+CORS(app)  # Habilitar CORS para todas las rutas
 
 app.config['SECRET_KEY'] = 'llave_secreta_123'
 
@@ -191,4 +196,4 @@ def api_eliminar_producto(id):
     return jsonify({'mensaje': 'Producto eliminado exitosamente'})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port= 5000, debug=False)
+    serve(app, host='0.0.0.0', port=5000, threads=4)  # Cambia el puerto según sea necesario
