@@ -176,7 +176,24 @@ Tabla `productos`:
 - Detectado error 404 porque no existe un `favicon.ico` en la aplicación.
 - Pendiente de agregar un favicon personalizado o ignorar el aviso si no es prioritario.
 
+## Acceso HTTPS mediante Servidor Virtual
 
+> **Nota sobre el acceso seguro (HTTPS):**
+>
+> Debido a que mi operador de telefonía bloquea el puerto 443 en mi red local, no es posible exponer directamente la aplicación Flask en modo seguro (HTTPS) desde mi equipo. Para solucionar esto y poder acceder de forma segura a la aplicación, he configurado un servidor virtual en Digital Ocean con el nombre de dominio `inventario.juliomalaga.me`.
+>
+> Este servidor virtual actúa como un proxy seguro (reverse proxy), permitiendo conexiones HTTPS externas y redirigiendo el tráfico a mi aplicación Flask que se ejecuta localmente en mi red privada.
+>
+> **Ventajas de este enfoque:**
+> - Permite el acceso seguro (HTTPS) a la aplicación desde cualquier lugar.
+> - Evita las restricciones de puertos impuestas por el proveedor de Internet.
+> - Facilita la integración con servicios externos que requieren HTTPS.
+>
+> **Resumen de la arquitectura:**
+>
+> ```
+> [Internet] --HTTPS--> [Servidor Virtual Digital Ocean: inventario.juliomalaga.me] --HTTP--> [Aplicación Flask en red local]
+> ```
 
 
 
